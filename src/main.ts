@@ -10,7 +10,7 @@ type FileMap = Map<string, string>;
 /**
  * SHA-1ハッシュを比較して得る、ファイルの状態の辞書型
  */
-type Status = "new file" | "modified" | "delete";
+type Status = "new file" | "modified" | "deleted";
 type StatusMap = Map<string, Status>;
 
 /**
@@ -160,12 +160,12 @@ const getGitStatus = (): string => {
             untracked.push(file);
         } else {
             if (indexHash !== workHash) {
-                if (!workHash) {notStaged.set(file, "delete")}
+                if (!workHash) {notStaged.set(file, "deleted")}
                 else if (!headHash) {notStaged.set(file, "new file")}
                 else {notStaged.set(file, "modified")}
             }
             if (indexHash !== headHash) {
-                if (!indexHash) {toBeCommited.set(file, "delete")}
+                if (!indexHash) {toBeCommited.set(file, "deleted")}
                 else if (!headHash) {toBeCommited.set(file, "new file")}
                 else {toBeCommited.set(file, "modified")}
             }
