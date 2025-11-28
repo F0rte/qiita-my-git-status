@@ -27,9 +27,3 @@ cd /path/to/your/git-repository
 # ツールを実行（パスはツールの場所を指定）
 npx ts-node /path/to/my-git-status/src/index.ts
 ```
-
-※ `my-git-status` ディレクトリ内で開発中にテスト実行する場合は、解析対象の `.git` ディレクトリが存在する場所で以下を実行します。
-
-```bash
-npx ts-node src/index.ts
-```
