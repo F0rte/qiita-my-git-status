@@ -223,6 +223,9 @@ const getGitStatus = (): string => {
     }
     statusStr += "\n";
   }
+  if (toBeCommited.size === 0) {
+    statusStr += `\nno changes added to commit (use "git add" and/or "git commit -a")`
+  }
   return statusStr;
 };
 
