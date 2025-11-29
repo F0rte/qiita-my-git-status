@@ -14,16 +14,6 @@ type Status = "new file" | "modified" | "deleted";
 type StatusMap = Map<string, Status>;
 
 /**
- * 文字列処理を多用するため、型チェックを定義
- */
-const typecheck = (str: string | undefined): string => {
-  if (typeof str === "undefined") {
-    throw new Error(`Get undefined str: ${str}`);
-  }
-  return str;
-};
-
-/**
  * HEADのcommit IDを取得する
  */
 const getHEAD = (): string => {
@@ -48,8 +38,11 @@ const getHEAD = (): string => {
  * バイナリデータで返却する
  */
 const getGitObject = (objectId: string | undefined): Buffer<ArrayBuffer> => {
-  const objectDir = typecheck(objectId).slice(0, 2);
-  const objectPath = typecheck(objectId).slice(2);
+  if (objectId === undefined) {
+    throw new Error("objectId is undefined");
+  }
+  const objectDir = objectId.slice(0, 2);
+  const objectPath = objectId.slice(2);
   const GitObject = readFileSync(`.git/objects/${objectDir}/${objectPath}`);
 
   // zlib展開
@@ -65,6 +58,9 @@ const getFileMapHEAD = (commitId: string): FileMap => {
 
   // treeのIDを取得し、対応するオブジェクトを取得
   const treeId = commitObject.split("\n")[0]?.split("tree ")[1];
+  if (treeId === undefined) {
+    throw new Error("treeId is undefined");
+  }
   const treeObject = getGitObject(treeId);
 
   const fileMap: FileMap = new Map();
@@ -81,12 +77,13 @@ const getFileMapHEAD = (commitId: string): FileMap => {
     // サブディレクトリを考慮せず、すべてのmodeが100644と仮定
     const filePath = meta.slice("100644 ".length);
 
+    // 20文字のバイナリ形式に変換されたSHA-1ハッシュを取得
     const blobId = treeObject.toString(
       "hex",
       boundaryNull + 1,
       boundaryNull + 21
     );
-    fileMap.set(typecheck(filePath), blobId);
+    fileMap.set(filePath, blobId);
 
     offset = boundaryNull + 21;
   }
