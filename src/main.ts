@@ -138,7 +138,7 @@ const getFileMapWorkingDir = (): FileMap => {
     }
     const fileData = readFileSync(file);
     const blobHeader = Buffer.from(
-      `blob ${fileData.toString("utf8").length}\0`,
+      `blob ${fileData.length}\0`,
       "utf8"
     );
     const sha1 = createHash("sha1")
