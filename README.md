@@ -1,4 +1,7 @@
 # git statusを自作する(Qiita記事)
+執筆記事
+https://qiita.com/warisuno/items/de5bfef14cf4286c9dc6
+
 ## セットアップと実行方法
 
 TypeScriptで実装された `git status` の簡易版ツールの実行手順です。
